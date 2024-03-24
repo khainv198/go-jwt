@@ -86,7 +86,8 @@ func (c *client) VerifyRefreshToken(token string) (*JwtClaim, error) {
 }
 
 func (c *client) generateToken(req JwtReq, tokenType TokenType, expiredTime uint64) (*GenerateResult, error) {
-	expiredAt := time.Now().UTC().Add(time.Second * time.Duration(expiredTime))
+	TTL := time.Second * time.Duration(expiredTime)
+	expiredAt := time.Now().UTC().Add(TTL)
 	jwtToken := jwt.New(c.signMethod)
 	jwtClaim := JwtClaim{
 		ID:   req.ID,
@@ -106,6 +107,7 @@ func (c *client) generateToken(req JwtReq, tokenType TokenType, expiredTime uint
 		Token:     tokenStr,
 		ExpiredAt: &expiredAt,
 		Signal:    strings.Split(tokenStr, ".")[2],
+		TTL:       TTL,
 	}, nil
 }
 

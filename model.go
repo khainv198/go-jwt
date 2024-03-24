@@ -36,4 +36,5 @@ type GenerateResult struct {
 	Token     string
 	ExpiredAt *time.Time
 	Signal    string
+	TTL       time.Duration
 }

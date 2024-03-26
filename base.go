@@ -57,10 +57,7 @@ func (c *client) verifyToken(tokenStr string, tokenType TokenType) (*JwtClaim, e
 	var result JwtClaim
 	token, err := jwt.ParseWithClaims(tokenStr, &result, keyFunc)
 
-	jwtErr, ok := err.(*jwt.ValidationError)
-	if !ok {
-		return nil, ErrInvalidToken
-	}
+	jwtErr, _ := err.(*jwt.ValidationError)
 
 	if jwtErr != nil && jwtErr.Errors == jwt.ValidationErrorExpired {
 		return nil, ErrInvalidToken
